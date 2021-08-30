@@ -33,8 +33,7 @@ public class CredentialService {
 
 		System.out.println("\nDear " + _emp.getFirstName() + " your generated credentials are as follows");
 		System.out.println("Email ---> " + email);
-		System.out.println("Password ---> " +password);
-		
+		System.out.println("Password ---> " + password);
 
 		System.out.println('\n');
 	}
@@ -54,8 +53,8 @@ public class CredentialService {
 
 	public String generatePassword(int passwordLength) {
 
-		String password = "";
-		
+		char[] password = new char[passwordLength];
+
 		final char[] lowerCaseLetters = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
 				'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 		final char[] upperCaseLetters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
@@ -65,38 +64,40 @@ public class CredentialService {
 		final char[] specialChars = { '<', '(', '[', '{', '\\', '^', '-', '=', '$', '!', '|', ']', '}', ')', '?', '*',
 				'+', '.', '>' };
 
+		final char[] allChars = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
+				'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+				'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6',
+				'7', '8', '9', '<', '(', '[', '{', '\\', '^', '-', '=', '$', '!', '|', ']', '}', ')', '?', '*', '+',
+				'.', '>' };
+
 		// password policy
 		// 1. length - 8 chars
 		// 2. atleast 1 - uppercase, 1 - lowercase, 1 - number, 1 - special char
 
 		// take random 4 types of letter for at-least one letter
-		char randomLowerCaseLetter = lowerCaseLetters[new Random().nextInt(lowerCaseLetters.length)];
-		char randomUpperCaseLetter = upperCaseLetters[new Random().nextInt(upperCaseLetters.length)];
-		char randomNumber = numbers[new Random().nextInt(numbers.length)];
-		char randomSpecialChar = specialChars[new Random().nextInt(specialChars.length)];
+		password[0] = lowerCaseLetters[new Random().nextInt(lowerCaseLetters.length)];
+		password[1] = upperCaseLetters[new Random().nextInt(upperCaseLetters.length)];
+		password[2] = numbers[new Random().nextInt(numbers.length)];
+		password[3] = specialChars[new Random().nextInt(specialChars.length)];
 
-		
-		
-		password += randomLowerCaseLetter;
-		password += randomUpperCaseLetter;
-		password += randomNumber;
-		password += randomSpecialChar;
-		
 		// randomly select 4 other characters from all type
-		StringBuilder sb = new StringBuilder();
-		sb.append(lowerCaseLetters);
-		sb.append(upperCaseLetters);
-		sb.append(numbers);
-		sb.append(specialChars);
-
-		for (int i = 0; i < passwordLength - 4; i++) {
-			password += sb.charAt(new Random().nextInt(sb.length()));
-		}
-
-		// shuffle the password 
-		Collections.shuffle(Arrays.asList(password.toCharArray()));
 		
-		return password.toString();
+		for (int i = 4; i < passwordLength; i++) {
+			password[i] = allChars[new Random().nextInt(allChars.length)];
+		}
+		
+		// shuffle the password
+		for (int i=0; i<password.length; i++) {
+					
+			int randomPosition = new Random().nextInt(password.length);
+			
+            char temp = password[i];
+            password[i] = password[randomPosition];
+            password[randomPosition] = temp;
+			
+		}
+		
+		return new String(password);
 	}
 
 }
