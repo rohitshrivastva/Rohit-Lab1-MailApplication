@@ -81,22 +81,22 @@ public class CredentialService {
 		password[3] = specialChars[new Random().nextInt(specialChars.length)];
 
 		// randomly select 4 other characters from all type
-		
+
 		for (int i = 4; i < passwordLength; i++) {
 			password[i] = allChars[new Random().nextInt(allChars.length)];
 		}
-		
+
 		// shuffle the password
-		for (int i=0; i<password.length; i++) {
-					
+		for (int i = 0; i < password.length; i++) {
+
 			int randomPosition = new Random().nextInt(password.length);
-			
-            char temp = password[i];
-            password[i] = password[randomPosition];
-            password[randomPosition] = temp;
-			
+
+			char temp = password[i];
+			password[i] = password[randomPosition];
+			password[randomPosition] = temp;
+
 		}
-		
+
 		return new String(password);
 	}
 
